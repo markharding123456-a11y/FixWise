@@ -1,42 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ContractorCard from "@/components/ContractorCard";
-import type { Contractor } from "@/lib/db";
+import {
+  contractors as allContractors,
+  getAllTrades,
+  getAllLocations,
+  searchContractors,
+} from "@/lib/contractors-data";
+
+const trades = getAllTrades();
+const locations = getAllLocations();
 
 export default function FindAProPage() {
-  const [contractors, setContractors] = useState<Contractor[]>([]);
-  const [trades, setTrades] = useState<string[]>([]);
-  const [locations, setLocations] = useState<string[]>([]);
+  const [contractors, setContractors] = useState(allContractors);
   const [selectedTrade, setSelectedTrade] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchContractors();
-  }, []);
-
-  async function fetchContractors(trade?: string, location?: string) {
-    setLoading(true);
-    const params = new URLSearchParams();
-    if (trade) params.set("trade", trade);
-    if (location) params.set("location", location);
-    const res = await fetch(`/api/contractors?${params}`);
-    const data = await res.json();
-    setContractors(data.contractors);
-    setTrades(data.trades || trades);
-    setLocations(data.locations || locations);
-    setLoading(false);
-  }
 
   function handleSearch() {
-    fetchContractors(selectedTrade, selectedLocation);
+    setContractors(searchContractors(selectedTrade, selectedLocation));
   }
 
   function handleReset() {
     setSelectedTrade("");
     setSelectedLocation("");
-    fetchContractors();
+    setContractors(allContractors);
   }
 
   return (
@@ -98,12 +86,7 @@ export default function FindAProPage() {
       </div>
 
       {/* Results */}
-      {loading ? (
-        <div className="text-center py-16">
-          <div className="w-8 h-8 border-4 border-fw-blue border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-          <p className="text-fw-gray-500">Loading contractors...</p>
-        </div>
-      ) : contractors.length === 0 ? (
+      {contractors.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-fw-gray-500 text-lg">
             No contractors found. Try broadening your search.

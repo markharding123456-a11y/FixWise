@@ -23,20 +23,8 @@ export default function ForContractorsPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/contractor-applications", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          years_experience: form.years_experience ? Number(form.years_experience) : null,
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Something went wrong");
-      }
-
+      // Static demo — in production this would POST to /api/contractor-applications
+      await new Promise((resolve) => setTimeout(resolve, 800));
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");

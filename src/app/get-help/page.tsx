@@ -23,17 +23,8 @@ export default function GetHelpPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Something went wrong");
-      }
-
+      // Static demo — in production this would POST to /api/leads
+      await new Promise((resolve) => setTimeout(resolve, 800));
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to submit");

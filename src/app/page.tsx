@@ -1,6 +1,6 @@
 import Link from "next/link";
 import GuideCard from "@/components/GuideCard";
-import { getAllGuides, getFeaturedGuides } from "@/lib/guides";
+import { getAllGuides, getFeaturedGuides } from "@/lib/guides-data";
 
 const categories = [
   {
@@ -78,7 +78,7 @@ export default function Home() {
             {categories.map((cat) => (
               <Link
                 key={cat.name}
-                href={`/guides?category=${encodeURIComponent(cat.name)}`}
+                href="/guides"
                 className="bg-white rounded-xl p-5 text-center hover:shadow-md transition-shadow border border-fw-gray-200"
               >
                 <div className={`w-12 h-12 rounded-xl ${cat.color} mx-auto mb-3 flex items-center justify-center`}>

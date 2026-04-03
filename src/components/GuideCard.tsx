@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { GuideMeta } from "@/lib/guides";
+import type { GuideMeta } from "@/lib/guides-data";
 
 const difficultyColors = {
   Easy: "bg-fw-green-pale text-fw-green",

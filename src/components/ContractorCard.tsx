@@ -1,7 +1,7 @@
 import Link from "next/link";
-import type { Contractor } from "@/lib/db";
+import type { StaticContractor } from "@/lib/contractors-data";
 
-export default function ContractorCard({ contractor }: { contractor: Contractor }) {
+export default function ContractorCard({ contractor }: { contractor: StaticContractor }) {
   const trades = contractor.trades.split(",").map((t) => t.trim());
 
   return (

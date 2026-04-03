@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getContractorById, getAllContractors, seedDemoContractors } from "@/lib/db";
+import { getContractorById, contractors } from "@/lib/contractors-data";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
-  seedDemoContractors();
-  const contractors = getAllContractors();
   return contractors.map((c) => ({ id: String(c.id) }));
 }
 

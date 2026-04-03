@@ -1,26 +1,18 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState } from "react";
 import GuideCard from "@/components/GuideCard";
-import { getAllGuides, getCategories } from "@/lib/guides";
-import Link from "next/link";
+import { getAllGuides, getCategories } from "@/lib/guides-data";
 
-export const metadata: Metadata = {
-  title: "DIY Guides",
-  description:
-    "Step-by-step DIY guides for common home repairs, maintenance, remodeling, and water damage. Fix it yourself with confidence.",
-};
+const allGuides = getAllGuides();
+const categories = getCategories();
 
-export default async function GuidesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string }>;
-}) {
-  const { category } = await searchParams;
-  const allGuides = getAllGuides();
-  const categories = getCategories();
+export default function GuidesPage() {
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const filteredGuides = category
+  const filteredGuides = selectedCategory
     ? allGuides.filter(
-        (g) => g.category.toLowerCase() === category.toLowerCase()
+        (g) => g.category.toLowerCase() === selectedCategory.toLowerCase()
       )
     : allGuides;
 
@@ -35,35 +27,35 @@ export default async function GuidesPage({
 
       {/* Category filter */}
       <div className="flex flex-wrap gap-2 mb-8">
-        <Link
-          href="/guides"
+        <button
+          onClick={() => setSelectedCategory("")}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-            !category
+            !selectedCategory
               ? "bg-fw-blue text-white"
               : "bg-fw-gray-100 text-fw-gray-600 hover:bg-fw-gray-200"
           }`}
         >
           All
-        </Link>
+        </button>
         {categories.map((cat) => (
-          <Link
+          <button
             key={cat}
-            href={`/guides?category=${encodeURIComponent(cat)}`}
+            onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              category === cat
+              selectedCategory === cat
                 ? "bg-fw-blue text-white"
                 : "bg-fw-gray-100 text-fw-gray-600 hover:bg-fw-gray-200"
             }`}
           >
             {cat}
-          </Link>
+          </button>
         ))}
       </div>
 
       {filteredGuides.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-fw-gray-500 text-lg">
-            No guides found{category ? ` in "${category}"` : ""}. Check back soon!
+            No guides found. Check back soon!
           </p>
         </div>
       ) : (
